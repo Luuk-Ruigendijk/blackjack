@@ -20,6 +20,18 @@ var houseAce = 0;
 
 var playerAce = 0;
 
+var types = "";
+
+var originalAmount = types.length;
+
+var pickedCard;
+
+var playerCash = 300;
+
+var betAmount = 0;
+
+document.getElementById("playerCash").innerHTML = playerCash;
+
 function addTotalCardPool(){
 	for (var pack = 0; pack < 2; pack++) {
 		for (var setOfCard = 0; setOfCard < 4; setOfCard++) {
@@ -62,19 +74,24 @@ function addTotalCardPool(){
 	}
 }
 
-addTotalCardPool();
-
-var types = "";
-
-var originalAmount = types.length;
-
-function resetCards(){
-	types = typesOriginal;
+function resetBoard(){
+	var housePoints = 0;
+	var playerPoints = 0;
+	var houseAce = 0;
+	var playerAce = 0;
+	for(var i = 0; i < cardsAndValues.length; i++){ 
+	    cardsAndValues.splice(0, 1);
+	}
+	document.getElementById("cardLocationPlayer").innerHTML = '';
+	document.getElementById("cardLocationHouse").innerHTML = '';
 }
 
-var pickedCard;
-
-function startGame(){
+function fullStartGame(){
+	resetBoard();
+	addTotalCardPool();
+	document.getElementById("startGameButton").style.display = "none";
+	document.getElementById("hitButton").style.visibility = "visible";
+	document.getElementById("standButton").style.visibility = "visible";
 	for (var givenCards = 0; givenCards < 2; givenCards++) {
 		pickedCard = Math.floor(Math.random() * cardsAndValues.length);
 		console.log(pickedCard);
@@ -83,11 +100,13 @@ function startGame(){
   		document.getElementById("cardLocationHouse").appendChild(createCard);
   		if (givenCards==0) {
   			createCard.setAttribute("class", "regular");
+  			createCard.setAttribute("id", "firstHouseCard");
   		}
-  		if (cardsAndValues[pickedCard].card == "HartenAas" || "KlaverAas" || "RuitenAas" || "SchoppenAas") {
+  		if (cardsAndValues[pickedCard].card == "HartenAas" || cardsAndValues[pickedCard].card == "KlaverAas" || cardsAndValues[pickedCard].card == "RuitenAas" || cardsAndValues[pickedCard].card == "SchoppenAas") {
   			houseAce++;
   		}
   		housePoints+=cardsAndValues[pickedCard].value;
+  		cardsAndValues.splice(pickedCard, 1);
 	}
 
 	for (var givenCards = 0; givenCards < 2; givenCards++) {
@@ -97,29 +116,57 @@ function startGame(){
 		var createCard = document.createElement("IMG");
   		createCard.setAttribute("src", imagePrefix+cardsAndValues[pickedCard].card+imageSuffix);
   		document.getElementById("cardLocationPlayer").appendChild(createCard);
-  		if (cardsAndValues[pickedCard].card == "HartenAas" || "KlaverAas" || "RuitenAas" || "SchoppenAas") {
+  		if (cardsAndValues[pickedCard].card == "HartenAas" || cardsAndValues[pickedCard].card == "KlaverAas" || cardsAndValues[pickedCard].card == "RuitenAas" || cardsAndValues[pickedCard].card == "SchoppenAas") {
   			playerAce++;
   		}
   		playerPoints+=cardsAndValues[pickedCard].value;
+  		cardsAndValues.splice(pickedCard, 1);
   		console.log("this is "+playerAce);
 
 	}
 	if (housePoints==21) {
+		document.getElementById("firstHouseCard").setAttribute("class", "");
 		if (playerPoints==21) {
-			alert("tie")
+			alert("tie");
+			gameOver("tie");
 		}
 		else {
 			alert("house wins")
+			gameOver("house");
 		}
 	}
 	else {
 		if (playerPoints==21) {
 			alert("you have blackjack!")
+			document.getElementById("firstHouseCard").setAttribute("class", "");
+			gameOver("blackjack");
 		}
 	}
 }
 
-startGame()
+function startGame() {
+	if (playerCash>0) {
+		var setBetAmount = prompt("Please enter the amount you wish to bet:", 0);
+	if (setBetAmount == null || setBetAmount == "") {
+	    window.alert("Please enter a valid amount");
+	} else {
+		if (isNaN(setBetAmount) || setBetAmount < 1 || setBetAmount > playerCash) {
+			window.alert("Please enter a valid amount");
+		}
+		else {
+			setBetAmount = Number(setBetAmount);
+			betAmount = setBetAmount;
+			playerCash = playerCash - betAmount;
+			document.getElementById("playerCash").innerHTML = playerCash;
+			fullStartGame();
+		}
+	}
+	setBetAmount = 0;
+	} else {
+		alert("You're out of cash!")
+	}
+	
+}
 
 function addPlayerCard() {
 	pickedCard = Math.floor(Math.random() * cardsAndValues.length);
@@ -127,25 +174,43 @@ function addPlayerCard() {
 	var createCard = document.createElement("IMG");
 	createCard.setAttribute("src", imagePrefix+cardsAndValues[pickedCard].card+imageSuffix);
 	document.getElementById("cardLocationPlayer").appendChild(createCard);
-	if (cardsAndValues[pickedCard].card == "HartenAas" || "KlaverAas" || "RuitenAas" || "SchoppenAas") {
+	if (cardsAndValues[pickedCard].card == "HartenAas" || cardsAndValues[pickedCard].card == "KlaverAas" || cardsAndValues[pickedCard].card == "RuitenAas" || cardsAndValues[pickedCard].card == "SchoppenAas") {
 		playerAce++;
 	}
 	playerPoints+=cardsAndValues[pickedCard].value;
+  	cardsAndValues.splice(pickedCard, 1);
 	if (playerPoints>21) {
 		if (playerAce>0) {
 			playerPoints-=10;
 			playerAce--;
 		}
 		else {
+			document.getElementById("firstHouseCard").setAttribute("class", "");
 			alert("you lost!");
+			gameOver("house");
 		}
 	}
 	console.log(playerPoints);
 }
 
 function stand() {
+	document.getElementById("firstHouseCard").setAttribute("class", "");
 	if (housePoints>21) {
-		alert("player wins")
+			if (houseAce>0) {
+			housePoints-=10;
+			houseAce--;
+			if (housePoints<17) {
+				stand();
+			}
+			if (housePoints>16) {
+				comparePoints();
+			}
+		}
+		else {
+			alert("player wins")
+			gameOver("player");
+		}
+			
 		}
 	else {
 		if (housePoints>16) {
@@ -157,10 +222,11 @@ function stand() {
 			var createCard = document.createElement("IMG");
 			createCard.setAttribute("src", imagePrefix+cardsAndValues[pickedCard].card+imageSuffix);
 			document.getElementById("cardLocationHouse").appendChild(createCard);
-			if (cardsAndValues[pickedCard].card == "HartenAas" || "KlaverAas" || "RuitenAas" || "SchoppenAas") {
+			if (cardsAndValues[pickedCard].card == "HartenAas" || cardsAndValues[pickedCard].card == "KlaverAas" || cardsAndValues[pickedCard].card == "RuitenAas" || cardsAndValues[pickedCard].card == "SchoppenAas") {
 				houseAce++;
 			}
 			housePoints+=cardsAndValues[pickedCard].value;
+	  		cardsAndValues.splice(pickedCard, 1);
 			stand();
 		}
 	}
@@ -168,14 +234,50 @@ function stand() {
 
 function comparePoints() {
 	if (housePoints>playerPoints) {
-		alert("house wins!")
+		alert("house wins!");
+		gameOver("house");
 	}
 	else {
 		if (housePoints<playerPoints) {
-			alert("player wins!")
+			alert("player wins!");
+			gameOver("player");
 		}
 		else {
-			alert("it's a tie.")
+			alert("it's a tie.");
+			gameOver("tie");
 		}
 	}
+}
+
+function gameOver(endingState) {
+	document.getElementById("startGameButton").style.display = "inline";
+	document.getElementById("hitButton").style.visibility = "hidden";
+	document.getElementById("standButton").style.visibility = "hidden";
+	playerAce=0;
+	playerPoints=0;
+	houseAce=0;
+	housePoints=0;
+	for (var i = 0; i < cardsAndValues.length; i++) {
+		cardsAndValues.splice(0, 1);
+	}
+	if (endingState==="house") {
+
+	}
+	else {
+		if (endingState==="tie") {
+			playerCash = playerCash + betAmount;
+		}
+		else {
+			if (endingState==="player") {
+				playerCash = playerCash + betAmount + betAmount;
+			}
+			else {
+				playerCash = playerCash + betAmount + betAmount + betAmount;
+			}
+			
+		}
+		
+	}
+	document.getElementById("playerCash").innerHTML = playerCash;
+	betAmount = 0;
 }
