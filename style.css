@@ -60,3 +60,7 @@ p{
 #standButton{
 	visibility: hidden;
 }
+
+#menuLocation{
+	float: right;
+}

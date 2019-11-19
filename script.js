@@ -281,3 +281,14 @@ function gameOver(endingState) {
 	document.getElementById("playerCash").innerHTML = playerCash;
 	betAmount = 0;
 }
+
+function openMenu() {
+	document.getElementById("menu").style.display = "block";
+	document.getElementById("menuButton").style.display = "none";
+	
+}
+
+function closeMenu() {
+	document.getElementById("menu").style.display = "none";
+	document.getElementById("menuButton").style.display = "block";
+}
