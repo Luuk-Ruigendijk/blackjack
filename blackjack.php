@@ -1,10 +1,8 @@
-<?php ?>
-
 <!DOCTYPE html>
 <html>
 <head>
 	<title></title>
-
+<script type="text/javascript" src="jquery.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>	
 <body>
@@ -27,7 +25,7 @@
 				
 			</div>
 			<div id="playerCashLocation">
-				<p id="playerCash"></p>
+				<p id="playerCash"><?php echo""; ?></p>
 			</div>
 		</div>
 	

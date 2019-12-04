@@ -145,6 +145,7 @@ function fullStartGame(){
 }
 
 function startGame() {
+	savePlayerCash(playerCash);
 	if (playerCash>0) {
 		var setBetAmount = prompt("Please enter the amount you wish to bet:", 0);
 	if (setBetAmount == null || setBetAmount == "") {
@@ -280,6 +281,7 @@ function gameOver(endingState) {
 	}
 	document.getElementById("playerCash").innerHTML = playerCash;
 	betAmount = 0;
+	savePlayerCash(playerCash);
 }
 
 function openMenu() {
@@ -291,4 +293,18 @@ function openMenu() {
 function closeMenu() {
 	document.getElementById("menu").style.display = "none";
 	document.getElementById("menuButton").style.display = "block";
+}
+
+function savePlayerCash(playerCash) {
+
+	function success(response){
+		alert(response);
+	};
+	$.ajax({
+		type: "POST",
+		url: "cashControl.php",
+		data: "",
+		success: success,
+		dataType: "text"
+	});
 }
