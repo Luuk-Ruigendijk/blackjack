@@ -1,3 +1,7 @@
+<?php 
+	session_unset();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +14,7 @@
 		<br>
 		<div id="loginScreen" style="display: none;">
 			<span>YOU STILL NEED TO CHANGE WHERE THE FORM SENDS YOU!!!</span>
-			<form action="/accounts.php" method="post">
+			<form action="/accountLogin.php" method="post">
 			    <div>
 			      	<label for="name"><b>Username</b></label>
 			      	<input type="text" placeholder="Enter Username" name="name" required>

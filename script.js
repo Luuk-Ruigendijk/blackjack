@@ -1,3 +1,5 @@
+var playerUserName;
+
 var imagePrefix = "images/";
 
 var imageSuffix = ".png";
@@ -31,6 +33,8 @@ var playerCash = 300;
 var betAmount = 0;
 
 document.getElementById("playerCash").innerHTML = playerCash;
+
+document.getElementById("playerCash").innerHTML = playerUserName;
 
 function addTotalCardPool(){
 	for (var pack = 0; pack < 2; pack++) {
@@ -293,6 +297,7 @@ function openMenu() {
 function closeMenu() {
 	document.getElementById("menu").style.display = "none";
 	document.getElementById("menuButton").style.display = "block";
+	
 }
 
 function savePlayerCash(playerCash) {
