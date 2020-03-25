@@ -28,13 +28,9 @@ var originalAmount = types.length;
 
 var pickedCard;
 
-var playerCash = 300;
-
 var betAmount = 0;
 
-document.getElementById("playerCash").innerHTML = playerCash;
-
-document.getElementById("playerCash").innerHTML = playerUserName;
+var shownCash = playerCash;
 
 function addTotalCardPool(){
 	for (var pack = 0; pack < 2; pack++) {
@@ -148,26 +144,24 @@ function fullStartGame(){
 	}
 }
 
+var setBetAmount;
+
 function startGame() {
-	savePlayerCash(playerCash);
-	if (playerCash>0) {
-		var setBetAmount = prompt("Please enter the amount you wish to bet:", 0);
-	if (setBetAmount == null || setBetAmount == "") {
-	    window.alert("Please enter a valid amount");
-	} else {
-		if (isNaN(setBetAmount) || setBetAmount < 1 || setBetAmount > playerCash) {
-			window.alert("Please enter a valid amount");
+	if (playerCash > 0) {
+		setBetAmount = prompt("Please enter the amount you wish to bet:", 0);
+		if (setBetAmount == null || isNaN(setBetAmount) || setBetAmount < 1 || setBetAmount > playerCash) {
+		    window.alert("Please enter a valid amount");
 		}
 		else {
-			setBetAmount = Number(setBetAmount);
 			betAmount = setBetAmount;
+			betAmount = parseInt(betAmount);
 			playerCash = playerCash - betAmount;
 			document.getElementById("playerCash").innerHTML = playerCash;
+			alterPlayerCash(playerCash);
 			fullStartGame();
 		}
 	}
-	setBetAmount = 0;
-	} else {
+	else {
 		alert("You're out of cash!")
 	}
 	
@@ -285,7 +279,7 @@ function gameOver(endingState) {
 	}
 	document.getElementById("playerCash").innerHTML = playerCash;
 	betAmount = 0;
-	savePlayerCash(playerCash);
+	alterPlayerCash(playerCash);
 }
 
 function openMenu() {
@@ -300,7 +294,9 @@ function closeMenu() {
 	
 }
 
-function savePlayerCash(playerCash) {
+function alterPlayerCash(playerCash) {
+
+	
 
 	function success(response){
 		alert(response);
@@ -308,8 +304,12 @@ function savePlayerCash(playerCash) {
 	$.ajax({
 		type: "POST",
 		url: "cashControl.php",
-		data: "",
+		data: "playerCash=" + playerCash,
 		success: success,
 		dataType: "text"
 	});
+}
+
+function giveMeMoney(){
+	
 }

@@ -13,7 +13,6 @@
 		<button id="loginScreenButton" onclick="document.getElementById('loginScreen').style.display='block', document.getElementById('loginScreenButton').style.display='none'" style="width:auto;">Log In</button>
 		<br>
 		<div id="loginScreen" style="display: none;">
-			<span>YOU STILL NEED TO CHANGE WHERE THE FORM SENDS YOU!!!</span>
 			<form action="/accountLogin.php" method="post">
 			    <div>
 			      	<label for="name"><b>Username</b></label>
