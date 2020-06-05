@@ -1,22 +1,6 @@
 <?php
 
-session_start();
-
 require "config.php";
-
-$servername = DB_SERVER;
-$username = DB_USERNAME;
-$password = DB_PASSWORD;
-$dbname = DB_NAME;
-if(!isset($_POST) || !isset($_POST['name'])) {
-	die("we hebben geen POST info of een username ontvangen");
-}
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $user= $_POST['name'];
 $pass= $_POST['pass'];
@@ -37,8 +21,12 @@ $cookie_value= $user;
 
 
     $query = "SELECT * FROM users WHERE username = '". $user ."' AND password = '". $pass ."'" ;
-    $result = mysqli_query($conn, $query);
-    if (mysqli_num_rows($result) == 1) 
+    $statement = $conn->prepare($query);
+    $statement->execute();
+    $retrievedUser = $statement->fetchAll(PDO::FETCH_CLASS);
+    $responseText = json_encode($retrievedUser);
+
+    if ($responseText) 
     {
         echo "query successfull wrote to DB";
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
@@ -47,11 +35,7 @@ $cookie_value= $user;
     }
     else
     {
-        echo"unscccessful login";
+        var_dump($responseText);
+        echo"unsuccessful login";
     }
-
-
-
-
-$conn->close();
 ?>

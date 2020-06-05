@@ -2,19 +2,6 @@
 
 require "config.php";
 
-$servername = DB_SERVER;
-$username = DB_USERNAME;
-$password = DB_PASSWORD;
-$dbname = DB_NAME;
-if(!isset($_POST) || !isset($_POST['name'])) {
-	die("we hebben geen POST info of een username ontvangen");
-}
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 if(isset($_POST['createAccount']))
 {
