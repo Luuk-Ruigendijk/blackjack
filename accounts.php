@@ -4,7 +4,7 @@ var_dump($_POST);
 require "config.php";
 
 
-    if(isset($_POST['login']))
+    /*if(isset($_POST['login']))
 {
     $user= $_POST['name'];
     $pass= $_POST['pass'];
