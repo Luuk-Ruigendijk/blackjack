@@ -16,7 +16,7 @@ require "config.php";
     {
         echo "you must enter your password <br />";
     }
-}
+}*/
 
 
     $query = "SELECT * FROM users WHERE username = '". $user ."' AND password = '". $pass ."'" ;

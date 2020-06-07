@@ -5,7 +5,7 @@ require "config.php";
 
 $login = $_COOKIE["login"];
 
-$query = "SELECT cash FROM users WHERE username = '". $login ."'";
+    $query = "SELECT cash FROM users WHERE username = '". $login ."'";
 
     $statement = $conn->prepare($query);
     $statement->execute();
@@ -13,19 +13,17 @@ $query = "SELECT cash FROM users WHERE username = '". $login ."'";
     $responseCash = json_encode($retrievedUser);
 
     if ($responseCash){
-        var_dump($responseCash);
-    	$cookie_name= "cash";
-		$cookie_value= $cash;
-        //$cash;
         $allCash = json_decode($responseCash);
-        var_dump($allCash->cash);
-		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-        //header('location:blackjack.php');
+        echo $retrievedUser[0]->cash;
+
+        //var_dump($responseCash);
+    	$cookie_name= "cash";
+		$cookie_value= $retrievedUser[0]->cash;
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+        header('location:blackjack.php');
     }
     else
     {
-        echo"unscccessful login";
+        echo"unsuccessful login";
     }
-
-$conn->close();
 ?>

@@ -32,6 +32,10 @@ var betAmount = 0;
 
 var shownCash = playerCash;
 
+var playerCash;
+
+
+
 function addTotalCardPool(){
 	for (var pack = 0; pack < 2; pack++) {
 		for (var setOfCard = 0; setOfCard < 4; setOfCard++) {

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title></title>
-	<script type="text/javascript" src="jquery.js"></script>
-	<link rel="stylesheet" type="text/css" href="style.css">
-</head>	
-<body>
-	<?php
-		print_r($_COOKIE["login"]);
-	?>
+	<head>
+		<title></title>
+		<script type="text/javascript" src="jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>	
+	<body>
+		<?php
+			print_r($_COOKIE["login"]);
+		?>
 
 		<div id="menuLocation">
 			<button id="menuButton" onclick="openMenu()">open menu</button>
@@ -35,6 +35,5 @@
 			playerUserName = '<?php echo($_COOKIE["login"]); ?>'
 		</script>
 		<script type="text/javascript" src="script.js"></script>
-	
-</body>
+	</body>
 </html>
