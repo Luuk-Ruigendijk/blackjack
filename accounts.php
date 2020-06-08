@@ -1,6 +1,5 @@
 <?php
 //zodra script is uitgevoerd is alle info die hier staat kwijt, inclusief 'variables'
-var_dump($_POST);
 require "config.php";
 
 
@@ -16,7 +15,7 @@ require "config.php";
     {
         echo "you must enter your password <br />";
     }
-}*/
+}
 
 
     $query = "SELECT * FROM users WHERE username = '". $user ."' AND password = '". $pass ."'" ;
@@ -29,24 +28,24 @@ require "config.php";
     else
     {
         echo"unscccessful login";
-    }
+    }*/
 
 if(isset($_POST['createAccount']))
 {
     $sql = "INSERT INTO users (username, password, cash)
     VALUES ('" . $_POST['name'] . "', '" . $_POST['pass'] . "', '" . $_POST['cash'] . "')";
-    if ($conn->query($sql) === TRUE) {
+    $stmt = $conn->query($sql);
+    if ($stmt->errorCode() === "00000") {
         echo "New record created successfully";
         $user= $_POST['name'];
         $pass= $_POST['pass'];
         $cash= $_POST['cash'];
         header('location:blackjack.php');
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . "<br>" . $conn->errorInfo()[2];
     }
+
+
 }
 
-
-
-$conn->close();
 ?>

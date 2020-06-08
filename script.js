@@ -30,9 +30,26 @@ var pickedCard;
 
 var betAmount = 0;
 
+var playerCash = getCookie("cash");
+
 var shownCash = playerCash;
 
-var playerCash;
+console.dir(playerCash);
+
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    c = c.trim();
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 
 
@@ -168,7 +185,6 @@ function startGame() {
 	else {
 		alert("You're out of cash!")
 	}
-	
 }
 
 function addPlayerCard() {
