@@ -3,7 +3,7 @@
 require "config.php";
 
 
-$login = $_COOKIE["login"];
+    $login = $_COOKIE["login"];
 
     $query = "SELECT cash FROM users WHERE username = '". $login ."'";
 

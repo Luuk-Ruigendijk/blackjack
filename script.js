@@ -38,17 +38,17 @@ console.dir(playerCash);
 
 
 function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    c = c.trim();
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for(var i = 0; i <ca.length; i++) {
+	    var c = ca[i];
+	    c = c.trim();
+	    if (c.indexOf(name) == 0) {
+	    	return c.substring(name.length, c.length);
+	    }
+	}
+	return "";
 }
 
 
