@@ -1,3 +1,5 @@
+//hier worden de global variables aangemaakt
+
 var playerUserName;
 
 var imagePrefix = "images/";
@@ -30,13 +32,13 @@ var pickedCard;
 
 var betAmount = 0;
 
+var setBetAmount;
+
 var playerCash = getCookie("cash");
 
 var shownCash = playerCash;
 
-console.dir(playerCash);
-
-
+//hier word de informatie die in de cash cookie staat opgevraagd. 
 function getCookie(cname) {
 	var name = cname + "=";
 	var decodedCookie = decodeURIComponent(document.cookie);
@@ -52,7 +54,7 @@ function getCookie(cname) {
 }
 
 
-
+//hier worden de twee sets aan kaarten met hun waardes in een array gezet.
 function addTotalCardPool(){
 	for (var pack = 0; pack < 2; pack++) {
 		for (var setOfCard = 0; setOfCard < 4; setOfCard++) {
@@ -95,6 +97,7 @@ function addTotalCardPool(){
 	}
 }
 
+//hier wordt de scores, de kaarten op het bord en de hoeveel aas de speler en het huis heeft gereset.
 function resetBoard(){
 	var housePoints = 0;
 	var playerPoints = 0;
@@ -107,6 +110,14 @@ function resetBoard(){
 	document.getElementById("cardLocationHouse").innerHTML = '';
 }
 
+/*hier word het spel gestart. De knop om de starten word onzichtbaar gemaakt,
+de knop voor een extra kaart te krijgen of om de stoppen met kaarten pakken
+zichtbaar gemaakt, en de kaarten gegeven tot de speler en het huis ieder
+2 kaarten heeft. Als de speler een aas krijgt word dit ook bijgehouden.
+Er word ook gekeken of de speler of het huis blackjack heeft. Als de speler
+of het huis blackjack heeft eindigt het spel gelijk. Als beiden het hebben
+eindigt het in gelijkspel, als alleen de speler het heeft krijgt hij 2x zoveel winst,
+als alleen het huis het heeft, heeft de speler gewoon verloren.*/
 function fullStartGame(){
 	resetBoard();
 	addTotalCardPool();
@@ -142,13 +153,12 @@ function fullStartGame(){
   		}
   		playerPoints+=cardsAndValues[pickedCard].value;
   		cardsAndValues.splice(pickedCard, 1);
-  		console.log("this is "+playerAce);
 
 	}
 	if (housePoints==21) {
 		document.getElementById("firstHouseCard").setAttribute("class", "");
 		if (playerPoints==21) {
-			alert("tie");
+			alert("it's a tie");
 			gameOver("tie");
 		}
 		else {
@@ -165,8 +175,11 @@ function fullStartGame(){
 	}
 }
 
-var setBetAmount;
-
+/*deze functie word uitgevoerd als de speler kiest het spel te starten. Er word
+eerst gekeken of de speler meer dan 0 op zijn rekening heeft. Als de speler dat heeft
+wordt er gekeken of er meer geld word ingezet dan ze hebben en dat ze een 'juist' bedrag
+invullen (bijv. geen letters). Als dat zo is word het ingevulde bedrag bijgehouden,
+en de hoeveelheid geld de speler heeft aangepast. Hierna word het spel volledig opgestart*/
 function startGame() {
 	if (playerCash > 0) {
 		setBetAmount = prompt("Please enter the amount you wish to bet:", 0);
@@ -212,12 +225,20 @@ function addPlayerCard() {
 	console.log(playerPoints);
 }
 
+/*this function is used when the player chooses to stand and starts the counting phase
+for the house. If the house has less than 17 they draw a new card. If the card total is
+higher than 21 it checks if the house has an ace. If they do, it removes 10 points
+(ace can counts as either 11 or 1 depending on the total score), after which it
+rechecks the total points. If the house gets over 21 points without an ace, the player
+wins. If the house has more than 16, but less than 22 points, the compare function gets 
+called.*/
 function stand() {
 	document.getElementById("firstHouseCard").setAttribute("class", "");
 	if (housePoints>21) {
 			if (houseAce>0) {
 			housePoints-=10;
 			houseAce--;
+			stand();
 			if (housePoints<17) {
 				stand();
 			}
@@ -251,6 +272,8 @@ function stand() {
 	}
 }
 
+/*here the points of the player and house get compared, and then send to the gameOver
+function to determine the end result*/
 function comparePoints() {
 	if (housePoints>playerPoints) {
 		alert("house wins!");
@@ -268,6 +291,9 @@ function comparePoints() {
 	}
 }
 
+/*in this function the game variables get reset, the buttons for stand and hit get hidden,
+the button for a new game gets shown, and the the amount of money a player owns after
+the game gets calculated. It then starts the function to change the money on the database*/
 function gameOver(endingState) {
 	document.getElementById("startGameButton").style.display = "inline";
 	document.getElementById("hitButton").style.visibility = "hidden";
@@ -314,12 +340,13 @@ function closeMenu() {
 	
 }
 
+//here the new amount of money is updated in the database
 function alterPlayerCash(playerCash) {
 
 	
 
 	function success(response){
-		alert(response);
+		
 	};
 	$.ajax({
 		type: "POST",
