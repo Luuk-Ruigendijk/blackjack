@@ -357,6 +357,18 @@ function alterPlayerCash(playerCash) {
 	});
 }
 
+//this function allows a player to add more money to their account
 function giveMeMoney(){
-	
+	var moreMoneyChosen = prompt("Please enter the amount you wish to bet:", 0);
+	if (moreMoneyChosen == null || isNaN(moreMoneyChosen) || moreMoneyChosen < 1 || moreMoneyChosen > playerCash) {
+	    window.alert("Please enter a valid amount");
+	}
+	else {
+		var moneyToAdd = parseInt(moreMoneyChosen);
+		playerCash = parseInt(playerCash);
+		playerCash = (playerCash + moneyToAdd);
+		console.log(playerCash);
+		document.getElementById("playerCash").innerHTML = playerCash;
+		alterPlayerCash(playerCash);
+	}
 }

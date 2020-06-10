@@ -29,6 +29,7 @@
 			</div>
 			<div id="playerCashLocation">
 				<p id="playerCash"><?php echo($_COOKIE["cash"]); ?></p>
+				<button onclick="giveMeMoney()">Add more money</button>
 			</div>
 		</div>
 		<script type="text/javascript">
